@@ -1,0 +1,29 @@
+#!/bin/bash
+
+gpu=$(prime-select query) #connected GPU
+con=$(xrandr | grep DP-1-2) #External Monitors Connected
+
+
+if [[ $con == *"DP-1-2 connected"* ]] #checks to see if external monitor connected
+then
+    if [ "$gpu" = "intel" ] #checks to see if gpu is intel
+    then
+        xrandr --output eDP-1 --off #Sets laptop display to off                                                                         
+        sleep 0.5
+        xrandr --output DP-2-2 --auto #Enables other displays
+        xrandr --output DP-1-2 --auto
+        xrandr --output DP-2-2 --right-of DP-2-1 #Configures display locations
+        xrandr --output DP-2-2 --right-of DP-2-1
+        xrandr --output DP-1-2 --right-of DP-2-2
+    elif [ "$gpu" = "nvidia" ] #Checks for Nvidia GPU
+    then
+        xrandr --output eDP-1-1 --off #Disables laptop display (under different name)
+    fi
+else
+    xrandr --output eDP-1 --auto #if external monitor not connected, enable laptop monitor
+fi
+    
+
+echo "Script Complete using $gpu GPU."
+
+    
