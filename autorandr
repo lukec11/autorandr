@@ -5,27 +5,28 @@ con=$(xrandr | grep DP-1-2)
 con2=$(xrandr | grep DP-1-1-1)
 
 
-if [[ $con == *"DP-1-2 connected"* ]] | [[ $con2 == *"DP-1-1-1 connected"* ]]
+if [[ $con == *"DP-1-2 connected"* ]] | [[ $con2 == *"DP-1-1-1 connected"* ]] #checks to see if external monitor connected
 then
-    if [ "$gpu" = "intel" ]
+    if [ "$gpu" = "intel" ] #Checks for intel iGPU
     then
         echo "Using intel GPU."
-        xrandr --output eDP-1 --off                                                                     $
+        xrandr --output eDP-1 --off #Disables laptop screen
         sleep 0.5
-        xrandr --output DP-2-2 --auto
+        xrandr --output DP-2-2 --auto #Enables external displays
         xrandr --output DP-1-2 --auto
-        xrandr --output DP-2-2 --right-of DP-2-1
+        xrandr --output DP-2-1 --auto
+        xrandr --output DP-2-2 --right-of DP-2-1 #Configures external displays
         xrandr --output DP-2-2 --right-of DP-2-1
         xrandr --output DP-1-2 --right-of DP-2-2
-    elif [ "$gpu" = "nvidia" ]
+    elif [ "$gpu" = "nvidia" ] #Checks for NVidia GPU
     then
         echo "Using NVidia GPU."
-        xrandr --output eDP-1-1 --off
+        xrandr --output eDP-1-1 --off #Disables laptop screen (different name)
         sleep 0.5
-        xrandr --output DP-1-1-1 --auto
+        xrandr --output DP-1-1-1 --auto #Enables external displays
         xrandr --output DP-1-1-2 --auto
         xrandr --output DP-1-2-2 --auto
-        xrandr --output DP-1-1-1 --left-of DP-1-1-2
+        xrandr --output DP-1-1-1 --left-of DP-1-1-2 #Configures external displays
         xrandr --output DP-1-2-2 --left-of DP-1-1-2
         xrandr --output DP-1-1-2 --right-of DP-1-1-1
     fi
