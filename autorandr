@@ -5,7 +5,7 @@ con=$(xrandr | grep DP-1-2)
 con2=$(xrandr | grep DP-1-1-1)
 
 
-if [[ $con == *"DP-1-2 connected"* ]] | [[ $con2 == *"DP-1-1-1 connected"* ]] #checks to see if external monitor connected
+if [[ $con == *"DP-1-2 connected"* ]] || [[ $con2 == *"DP-1-1-1 connected"* ]] #checks to see if external monitor connected
 then
     if [ "$gpu" = "intel" ] #Checks for intel iGPU
     then
