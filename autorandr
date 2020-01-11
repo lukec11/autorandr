@@ -2,11 +2,12 @@
 
 gpu=$(prime-select query)
 con=$(xrandr | grep DP-1-2)
-con2=$(xrandr | grep DP-1-1-1)
+con2=$(xrandr | grep DP-1-1-2)
 
 
-if [[ $con == *"DP-1-2 connected"* ]] || [[ $con2 == *"DP-1-1-1 connected"* ]] #checks to see if external monitor is connected
+if [[ $con == *"DP-1-2 connected"* ]] || [[ $con2 == *"DP-1-1-2 connected"* ]] #checks to see if external monitor is connected
 then
+    echo "External Display is connected!"
     if [ "$gpu" = "intel" ] #Checks for intel iGPU
     then
         echo "Using intel GPU."
@@ -28,9 +29,10 @@ then
         xrandr --output DP-1-2-2 --auto
         xrandr --output DP-1-1-1 --left-of DP-1-1-2 #Configures external displays
         xrandr --output DP-1-2-2 --left-of DP-1-1-2
-        xrandr --output DP-1-1-2 --right-of DP-1-1-1
+        xrandr --output DP-1-1-2 --right-of DP-1-2-2
     fi
 else
+    echo "External display not found. GPU was reported as: \"${gpu}\""
     xrandr --output eDP-1 --auto
     xrandr --output eDP-1-1 --auto
 fi
