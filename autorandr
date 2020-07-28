@@ -1,24 +1,23 @@
 #!/bin/bash
 
-gpu=$(prime-select query)
-con=$(xrandr | grep DP-1-2)
+gpu=$(system76-power graphics)
+con=$(xrandr | grep DP1-2)
 con2=$(xrandr | grep DP-1-1-2)
 
 
-if [[ $con == *"DP-1-2 connected"* ]] || [[ $con2 == *"DP-1-1-2 connected"* ]] #checks to see if external monitor is connected
+if [[ $con == *"DP1-2 connected"* ]] || [[ $con2 == *"DP-1-1-2 connected"* ]] #checks to see if external monitor is connected
 then
     echo "External Display is connected!"
-    if [ "$gpu" = "intel" ] #Checks for intel iGPU
+    if [ "$gpu" = "integrated" ] #Checks for intel iGPU
     then
         echo "Using intel GPU."
-        xrandr --output eDP-1 --off #Disables laptop screen
+        xrandr --output eDP1 --off #Disables laptop screen
         sleep 0.5
-        xrandr --output DP-2-2 --auto #Enables external displays
-        xrandr --output DP-1-2 --auto
-        xrandr --output DP-2-1 --auto
-        xrandr --output DP-2-2 --right-of DP-2-1 #Configures external displays
-        xrandr --output DP-2-2 --right-of DP-2-1
-        xrandr --output DP-1-2 --right-of DP-2-2
+        xrandr --output DP2-2 --auto #Enables external displays
+        xrandr --output DP1-2 --auto
+        xrandr --output DP2-1 --auto --primary
+        xrandr --output DP2-2 --right-of DP2-1 #Configures external displays
+        xrandr --output DP1-2 --right-of DP2-2
     elif [ "$gpu" = "nvidia" ] #Checks for NVidia GPU
     then
         echo "Using NVidia GPU."
@@ -27,9 +26,11 @@ then
         xrandr --output DP-1-1-1 --auto #Enables external displays
         xrandr --output DP-1-1-2 --auto
         xrandr --output DP-1-2-2 --auto
+		xrandr --output DP-1-2-1 --auto
         xrandr --output DP-1-1-1 --left-of DP-1-1-2 #Configures external displays
-        xrandr --output DP-1-2-2 --left-of DP-1-1-2
+        xrandr --output DP-1-2-2 --primary --left-of DP-1-1-2
         xrandr --output DP-1-1-2 --right-of DP-1-2-2
+		xrandr --output DP-1-2-1 --left-of DP-1-2-2 
     fi
 else
     echo "External display not found. GPU was reported as: \"${gpu}\""
